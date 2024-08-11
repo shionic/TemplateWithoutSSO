@@ -34,6 +34,7 @@ public class JwtService {
                 .expirationTime(new Date(LocalDateTime.now().plus(unitValue, unit).toEpochSecond(ZoneOffset.UTC)))
                 .subject(basicUser.getUsername())
                 .claim("userId", basicUser.getId())
+                .claim("roles", basicUser.getRoles())
                 .build();
         var object = new JWSObject(new JWSHeader(JWSAlgorithm.ES256),
                 new Payload(claimsSet.toJSONObject()));

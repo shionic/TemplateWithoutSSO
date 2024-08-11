@@ -3,9 +3,11 @@ package com.github.shionic.backendexample.services;
 import com.github.shionic.backendexample.models.User;
 import com.github.shionic.backendexample.repositories.UserRepository;
 import com.github.shionic.backendexample.repositories.UserRoleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
