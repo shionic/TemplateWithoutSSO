@@ -1,0 +1,14 @@
+logging:
+  level:
+    root: INFO
+    org.apache.tomcat.util.net.NioEndpoint: ERROR
+    sun.rmi: ERROR
+    java.io: ERROR
+    javax.management: ERROR
+
+spring:
+  application:
+    name: backendexample
+
+jwt:
+  generateTemp: true
