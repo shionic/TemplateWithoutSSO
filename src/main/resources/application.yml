@@ -12,3 +12,4 @@ spring:
 
 jwt:
   generateTemp: true
+  issuer: backendexample

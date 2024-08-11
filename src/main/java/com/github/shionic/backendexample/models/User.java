@@ -1,5 +1,6 @@
 package com.github.shionic.backendexample.models;
 
+import com.github.shionic.backendexample.security.BasicUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class User implements BasicUser {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
@@ -25,5 +26,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<UserRole> roles;
+    private List<UserRole> userRoles;
+
+    public List<String> getRoles() {
+        return userRoles.stream().map(UserRole::getId).toList();
+    }
 }
