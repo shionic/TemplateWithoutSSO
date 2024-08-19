@@ -1,6 +1,7 @@
 package com.github.shionic.backendexample.services;
 
 import com.github.shionic.backendexample.configurations.JwtProperties;
+import com.github.shionic.backendexample.models.User;
 import com.github.shionic.backendexample.security.BasicUser;
 import com.github.shionic.backendexample.utils.JwkUtils;
 import com.nimbusds.jose.*;
@@ -28,12 +29,13 @@ public class JwtService {
     @Autowired
     private JwtProperties jwtProperties;
 
-    public String generate(BasicUser basicUser, long unitValue, TemporalUnit unit) throws JOSEException {
+    public String generate(BasicUser basicUser, Long sessionId, long unitValue, TemporalUnit unit) throws JOSEException {
         var claimsSet = new JWTClaimsSet.Builder()
                 .issuer(jwtProperties.getIssuer())
                 .expirationTime(new Date(LocalDateTime.now().plus(unitValue, unit).toEpochSecond(ZoneOffset.UTC)))
                 .subject(basicUser.getUsername())
                 .claim("userId", basicUser.getId())
+                .claim("sessionId", sessionId)
                 .claim("roles", basicUser.getRoles())
                 .build();
         var object = new JWSObject(new JWSHeader(JWSAlgorithm.ES256),
@@ -53,9 +55,10 @@ public class JwtService {
         {
             var username = set.getSubject();
             var userId = (Long) set.getClaim("userId");
+            var sessionId = (Long) set.getClaim("sessionId");
             @SuppressWarnings("unchecked")
             var roles = (List<String>) set.getClaim("roles");
-            return new JwtUser(username, userId, roles);
+            return new JwtUser(username, userId, sessionId, roles);
         }
     }
 
@@ -63,6 +66,7 @@ public class JwtService {
     public static class JwtUser implements BasicUser {
         private final String username;
         private final Long id;
+        private final Long sessionId;
         private final List<String> roles;
         @Override
         public String getUsername() {
@@ -72,6 +76,11 @@ public class JwtService {
         @Override
         public Long getId() {
             return id;
+        }
+
+        @Override
+        public Long getSessionId() {
+            return sessionId;
         }
 
         @Override

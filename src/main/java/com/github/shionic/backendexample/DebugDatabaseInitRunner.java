@@ -39,6 +39,6 @@ public class DebugDatabaseInitRunner implements CommandLineRunner {
         user.setPassword(passwordEncoder.encode("admin"));
         user.setUserRoles(List.of(adminRole));
         userRepository.save(user);
-        logger.info("Debug admin jwt token {}", jwtService.generate(user, 10, ChronoUnit.YEARS));
+        logger.info("Debug admin jwt token {}", jwtService.generate(user, 0L, 10, ChronoUnit.YEARS));
     }
 }

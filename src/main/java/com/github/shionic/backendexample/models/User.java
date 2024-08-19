@@ -28,6 +28,11 @@ public class User implements BasicUser {
     )
     private List<UserRole> userRoles;
 
+    @Override
+    public Long getSessionId() {
+        throw new UnsupportedOperationException();
+    }
+
     public List<String> getRoles() {
         return userRoles.stream().map(UserRole::getId).toList();
     }

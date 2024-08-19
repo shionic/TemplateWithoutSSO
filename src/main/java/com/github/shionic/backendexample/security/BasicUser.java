@@ -11,6 +11,7 @@ import java.util.List;
 public interface BasicUser extends UserDetails {
     String getUsername();
     Long getId();
+    Long getSessionId();
     List<String> getRoles();
     default boolean hasRole(String role) {
         for(var e : getRoles()) {
